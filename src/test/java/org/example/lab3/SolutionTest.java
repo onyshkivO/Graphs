@@ -1,18 +1,38 @@
 package org.example.lab3;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SolutionTest {
 
+
+    protected static final ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+    @BeforeAll
+    static void setOut() {
+        System.setOut(new PrintStream(output));
+    }
+
+
     @Test
     void permutationTest() {
-        assertEquals(3024,Solution.permutation(9,4));
+        assertEquals(3024, Solution.permutation(9, 4));
     }
 
     @Test
-    void secondTest(){
+    void secondTest() {
+
+        Solution.second(7);
+
+        String actual = output.toString().replaceAll("\n", "").replaceAll("\r", "");
+
 
         String expected = "| n\\k |          1 |          2 |          3 |          4 |          5 |          6 |          7 |          8 |          9 |         10 |         11 |         12 |        F() |" +
                 "| 1   |          1 |            |            |            |            |            |            |            |            |            |            |            |          1 |" +
@@ -27,5 +47,7 @@ class SolutionTest {
                 "| 10  |          1 |        511 |       9330 |      34105 |      42525 |      22827 |       5880 |        750 |         45 |          1 |            |            |     115975 |" +
                 "| 11  |          1 |       1023 |      28501 |     145750 |     246730 |     179487 |      63987 |      11880 |       1155 |         55 |          1 |            |     678570 |" +
                 "| 12  |          1 |       2047 |      86526 |     611501 |    1379400 |    1323652 |     627396 |     159027 |      22275 |       1705 |         66 |          1 |    4213597 |";
+
+        assertEquals(expected,actual);
     }
 }
