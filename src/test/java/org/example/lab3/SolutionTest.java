@@ -1,10 +1,8 @@
 package org.example.lab3;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
@@ -27,9 +25,9 @@ class SolutionTest {
     }
 
     @Test
-    void secondTest() {
+    void sterlingTest() {
 
-        Solution.second(7);
+        Solution.createTable(7);
 
         String actual = output.toString().replaceAll("\n", "").replaceAll("\r", "");
 
