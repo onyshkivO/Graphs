@@ -12,8 +12,6 @@ public class Solution {
         for (int i = 0; i < length; i++) {
             n[i] = i + 1;
         }
-
-        System.out.println(Arrays.toString(n));
         List<List<Integer>> res = permutation(n);
         System.out.println(res);
     }
