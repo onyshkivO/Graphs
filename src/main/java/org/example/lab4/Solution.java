@@ -1,57 +1,68 @@
 package org.example.lab4;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Solution {
-
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Input n: ");
+        int length = scanner.nextInt();
+        Integer[] n = new Integer[length];
+        for (int i = 0; i < length; i++) {
+            n[i] = i + 1;
+        }
+
+        System.out.println(Arrays.toString(n));
+        List<List<Integer>> res = permutation(n);
+        System.out.println(res);
+    }
+
+    public static List<List<Integer>> permutation(Integer[] n) {
         List<List<Integer>> result = new ArrayList<>();
-        Integer[] n = new Integer[]{1,2,3,4};
-        result.add(new ArrayList<>(Arrays.asList(n)));
+        result.add(Arrays.stream(n).collect(Collectors.toList()));
 
-
-        for (int i = 0; i < factorialUsingForLoop(n.length) - 1; i++) {
-
-            Queue<Integer> queue = new PriorityQueue<>();
-            Queue<Integer> queue2 = new PriorityQueue<>();
-            queue.add(n[n.length - 1]);
-            queue2.add(n[n.length - 1]);
-
-            for (int j = n.length - 2; j >= 0; j--) {
-                if (n[j] < n[j + 1]) {
-
-                    List<Integer> temp = new ArrayList<>(Arrays.asList(n).subList(0, j));
-                    while (!queue.isEmpty() && queue.peek() < n[j]) {
-                        queue.poll();
-                    }
-                    temp.add(queue.peek());
-                    queue2.remove(queue.poll());
-                    queue2.add(n[j]);
-                    while (!queue2.isEmpty()) {
-                        temp.add(queue2.poll());
-                    }
-                    result.add(temp);
-                    for (int t = 0; t < n.length; t++) {
-                        n[t] = temp.get(t);
-                    }
-                    break;
-
-                } else {
-                    queue.add(n[j]);
-                    queue2.add(n[j]);
-                }
-
-            }
-
+        int startIndex = findStartIndex(n);
+        while (startIndex != -1) {
+            int biggerElement = findFirstBiggerElement(n, startIndex);
+            swap(n, startIndex, biggerElement);
+            reverseOrder(n, startIndex + 1);
+            result.add(Arrays.stream(n).collect(Collectors.toList()));
+            startIndex = findStartIndex(n);
         }
-        System.out.println(result);
+        return result;
     }
 
-    public static int factorialUsingForLoop(int n) {
-        int fact = 1;
-        for (int i = 2; i <= n; i++) {
-            fact = fact * i;
+    private static int findStartIndex(Integer[] n) {
+        for (int i = n.length - 2; i >= 0; i--) {
+            if (n[i] < n[i + 1]) return i;
         }
-        return fact;
+        return -1;
     }
+
+    private static int findFirstBiggerElement(Integer[] n, int elementIndex) {
+        for (int i = n.length - 1; i > elementIndex; i--) {
+            if (n[i] > n[elementIndex]) return i;
+        }
+        return -1;
+    }
+
+    private static void swap(Integer[] n, int i, int j) {
+        int temp = n[i];
+        n[i] = n[j];
+        n[j] = temp;
+    }
+
+    private static void reverseOrder(Integer[] n, int l) {
+        int r = n.length - 1;
+        while (l < r) {
+            int temp = n[l];
+            n[l] = n[r];
+            n[r] = temp;
+            r--;
+            l++;
+        }
+    }
+
+
 }
