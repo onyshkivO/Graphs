@@ -1,4 +1,4 @@
-package org.example.lab6;
+package org.example.lab7;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -9,12 +9,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GraphPresentingTest {
     @BeforeAll
-    static void  initGraph() throws IOException {
+    static void initGraph() throws IOException {
         GraphPresenting.initGraph("graph_01_1.txt");
     }
+
     @Test
     void incidenceTest() throws IOException {
-        String excepted ="| v\\e | e1 | e2 | e3 | e4 | e5 | e6 | e7 | e8 | e9 | e10| e11| e12| e13| e14| e15| e16| e17| e18| e19| e20| e21|\n" +
+        String excepted = "| v\\e | e1 | e2 | e3 | e4 | e5 | e6 | e7 | e8 | e9 | e10| e11| e12| e13| e14| e15| e16| e17| e18| e19| e20| e21|\n" +
                 "| v1  | -1 |  1 | -1 |  1 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |\n" +
                 "| v2  |  0 |  0 |  0 |  0 |  2 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 | -1 |  1 | -1 |  1 |  0 |  0 |  0 |  0 |\n" +
                 "| v3  |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  1 | -1 | -1 |  1 |  0 |  0 |\n" +
@@ -25,12 +26,12 @@ class GraphPresentingTest {
                 "| v8  |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  1 | -1 | -1 |  1 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |\n" +
                 "| v9  |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  1 | -1 |\n" +
                 "| v10 |  0 |  0 |  1 | -1 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  1 | -1 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |";
-        assertEquals(excepted,GraphPresenting.incidenceMatrixToString());
+        assertEquals(excepted, GraphPresenting.incidenceMatrixToString());
     }
 
     @Test
-    void adjacencyTest(){
-        String excepted ="| v\\v | v1 | v2 | v3 | v4 | v5 | v6 | v7 | v8 | v9 | v10|\n" +
+    void adjacencyTest() {
+        String excepted = "| v\\v | v1 | v2 | v3 | v4 | v5 | v6 | v7 | v8 | v9 | v10|\n" +
                 "| v1  |  0 |  0 |  0 |  0 |  1 |  0 |  0 |  0 |  0 |  1 |\n" +
                 "| v2  |  0 |  1 |  1 |  0 |  1 |  0 |  0 |  0 |  0 |  0 |\n" +
                 "| v3  |  0 |  1 |  0 |  0 |  0 |  1 |  0 |  0 |  0 |  0 |\n" +
@@ -41,7 +42,44 @@ class GraphPresentingTest {
                 "| v8  |  0 |  0 |  0 |  1 |  0 |  0 |  0 |  0 |  0 |  1 |\n" +
                 "| v9  |  0 |  0 |  0 |  0 |  0 |  1 |  0 |  0 |  0 |  0 |\n" +
                 "| v10 |  1 |  0 |  0 |  0 |  0 |  0 |  0 |  1 |  0 |  0 |";
-        assertEquals(excepted,GraphPresenting.adjacencyMatrixToString());
+        assertEquals(excepted, GraphPresenting.adjacencyMatrixToString());
+    }
+
+    @Test
+    void degreeTest() {
+        String expected = "|  v  | напівстепені входу | напівстепені виходу |\n" +
+                "| v1  |                  2 |                   2 |\n" +
+                "| v2  |                  3 |                   3 |\n" +
+                "| v3  |                  2 |                   2 |\n" +
+                "| v4  |                  3 |                   3 |\n" +
+                "| v5  |                  3 |                   3 |\n" +
+                "| v6  |                  2 |                   2 |\n" +
+                "| v7  |                  1 |                   1 |\n" +
+                "| v8  |                  2 |                   2 |\n" +
+                "| v9  |                  1 |                   1 |\n" +
+                "| v10 |                  2 |                   2 |\n";
+        assertEquals(expected, GraphPresenting.degreeToString());
+    }
+
+    @Test
+    void isolatedAndLeafVertexCalculationTest() {
+        boolean[][] expected = new boolean[][]{
+                {false, false},
+                {false, false},
+                {false, false},
+                {false, false},
+                {false, false},
+                {false, false},
+                {false, false},
+                {false, false},
+                {false, false},
+                {false, false}
+        };
+        assertArrayEquals(expected,GraphPresenting.isolatedAndLeafVertexCalculation());
+    }
+    @Test
+    void getRegularKTest(){
+        assertEquals(-1,GraphPresenting.getRegularK());
     }
 
 }
