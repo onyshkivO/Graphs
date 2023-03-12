@@ -1,10 +1,10 @@
-package org.example.lab6;
+package org.example.lab7;
 
 import java.io.*;
-import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.function.IntConsumer;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class GraphPresenting {
     private static int[][] incidence;
@@ -81,8 +81,18 @@ public class GraphPresenting {
         return result.toString();
     }
 
-    public static void main(String[] args) {
-        menu();
+    public static void printMatrix(String matrix){
+        System.out.println(matrix);
+    }
+
+    public static void saveMatrixToFile(String matrix,String filePath){
+        try(PrintWriter printWriter = new PrintWriter(filePath)){
+            printWriter.println(matrix);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+            System.out.println("Cannot find file to write");
+        }
+
     }
 
     public static void menu(){
@@ -131,25 +141,76 @@ public class GraphPresenting {
             }
         }while (menu!=0);
     }
-
-
-
-
-
-
-    public static void printMatrix(String matrix){
-        System.out.println(matrix);
-    }
-    public static void saveMatrixToFile(String matrix,String filePath){
-        try(PrintWriter printWriter = new PrintWriter(filePath)){
-            printWriter.println(matrix);
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-            System.out.println("Cannot find file to write");
+    public static void main(String[] args) throws IOException {
+        initGraph("graph_01_1.txt");
+        int[][] res = degree();
+        System.out.println(isOdnoridnii(res));
+        boolean[][] res2 = visachiy(res);
+        res2[0][0]=true;
+        res2[3][1]=true;
+        res2[4][0]=true;
+        for (boolean[] a: res2){
+            System.out.println(Arrays.toString(a));
         }
+        for (int[] a: res){
+            System.out.println(Arrays.toString(a));
+        }
+        printMatrix(adjacencyMatrixToString());
+        System.out.println( degreeToString(res));
+        System.out.println( visachiyToString(res2));
 
+        //menu();
+    }
+
+    public static int[][] degree(){
+        int[][] result = new int[vertices][2];
+        for (int i=0;i<vertices;i++){
+            for (int j = 0;j<vertices;j++){
+                result[i][0]+=adjacency[i][j];
+                result[j][1]+=adjacency[i][j];
+            }
+        }
+        return result;
+    }
+    public static int isOdnoridnii(int[][] degree){
+        int k = degree[0][0];
+        long count = Arrays.stream(degree)
+                .flatMap((Function<int[], Stream<?>>) ints -> Arrays.stream(ints).boxed())
+                .mapToInt(x-> (Integer)x)
+                .filter(x->x!=3)
+                .count();
+        return count!=0?-1:k;
+    }
+
+    //0 -ізольована
+    //1 - висяча
+    public static boolean[][] visachiy(int[][] degree){
+        boolean[][] res = new boolean[vertices][2];
+        for (int i=0;i<degree.length;i++){
+            if (degree[i][0]+degree[i][1]==0) res[i][0]=true;
+            if (degree[i][0]+degree[i][1]==1) res[i][1]=true;
+        }
+        return res;
+    }
+
+    public static String degreeToString(int[][] degree){
+        StringBuilder result = new StringBuilder();
+        result.append("|  v  | напівстепені входу | напівстепені виходу |\n");
+        for (int i=0;i<degree.length;i++){
+            result.append(String.format("| v%-2d | %18d | %19d |\n",i+1,degree[i][0],degree[i][1]));
+        }
+        return result.toString();
     }
 
 
-
+    public static String visachiyToString(boolean[][] visachii){
+        StringBuilder result = new StringBuilder();
+        result.append("| Ізольовані вершини | Висячі вершини |\n");
+        for (int i=0;i<visachii.length;i++){
+            if (visachii[i][0]&&visachii[i][1]) result.append(String.format("| %18s | %14s |\n","v"+i,"v"+i));
+            else if (visachii[i][0])result.append(String.format("| %18s | %14s |\n","v"+i+1,""));
+            else if (visachii[i][1])result.append(String.format("| %18s | %14s |\n","","v"+i+1));
+        }
+        return result.toString();
+    }
 }
