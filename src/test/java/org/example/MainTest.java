@@ -19,24 +19,22 @@ class MainTest {
 
     @Test
     void createTable(){
-        Main.createTable("1100011100","1010101110","1100110000");
+        Main.createTable();
 
-        String actual = output.toString().replaceAll("\n", "").replaceAll("\r", "");
+        String actual = output.toString().replaceAll("\n","").replaceAll("\r","");
 
 
         String expected = "--------------------------------" +
                 "| p | q | r | p ^ (q && r) |" +
                 "--------------------------------" +
-                "| 1 | 1 | 1 |       0      |" +
-                "| 1 | 0 | 1 |       1      |" +
-                "| 0 | 1 | 0 |       0      |" +
                 "| 0 | 0 | 0 |       0      |" +
+                "| 0 | 0 | 1 |       0      |" +
+                "| 0 | 1 | 0 |       0      |" +
                 "| 0 | 1 | 1 |       1      |" +
+                "| 1 | 0 | 0 |       1      |" +
                 "| 1 | 0 | 1 |       1      |" +
                 "| 1 | 1 | 0 |       1      |" +
-                "| 1 | 1 | 0 |       1      |" +
-                "| 0 | 1 | 0 |       0      |" +
-                "| 0 | 0 | 0 |       0      |" +
+                "| 1 | 1 | 1 |       0      |" +
                 "--------------------------------";
         assertEquals(expected, actual);
 
