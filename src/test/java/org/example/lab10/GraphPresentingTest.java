@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class GraphPresentingTest {
     @BeforeAll
     static void  initGraph() throws IOException {
-        GraphPresenting.initGraph("lab10_myGraph.txt");
+        GraphPresenting.initGraph("lab10_myGraph2.txt");
     }
     @Test
     void incidenceTest() throws IOException {

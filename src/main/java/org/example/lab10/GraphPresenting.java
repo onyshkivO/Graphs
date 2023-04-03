@@ -46,9 +46,7 @@ public class GraphPresenting {
         int to = Integer.parseInt(line.split(" ")[1]);
         int lineWeight = Integer.parseInt(line.split(" ")[2]);
         weight[from][to]=String.valueOf(lineWeight);
-        weight[to][from]=String.valueOf(lineWeight);
         weightInt[from][to]=lineWeight;
-        weightInt[to][from]=lineWeight;
     }
 
     public static String weightMatrixToString() {
