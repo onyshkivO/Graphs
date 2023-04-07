@@ -1,10 +1,8 @@
-package org.example.lab6;
+package org.example.lab14;
 
 import java.io.*;
-import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.function.IntConsumer;
 
 public class GraphPresenting {
     private static int[][] incidence;
@@ -81,11 +79,32 @@ public class GraphPresenting {
         return result.toString();
     }
 
+    public static boolean isReflex() {
+        for (int i = 0; i < vertices; i++) {
+            if (adjacency[i][i] != 1) return false;
+        }
+        return true;
+    }
+
+    public static boolean isTransitive() {
+        for (int i = 0; i < vertices; i++) {
+            for (int j = 0; j < vertices; j++) {
+                if (adjacency[i][j] == 1) {
+                    for (int k = 0; k < vertices; k++) {
+                        if (adjacency[j][k] == 1 && adjacency[i][k] != 1) {
+                            return false;}
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
         menu();
     }
 
-    public static void menu(){
+    public static void menu() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Input path to file(or name): ");
         String filePath = scanner.nextLine();
@@ -101,55 +120,42 @@ public class GraphPresenting {
         int menu;
         do {
             System.out.println("Chose operation:");
-            System.out.println("1: Print incidence(інцидентності) matrix into console");
-            System.out.println("2: Print adjacency(суміжності) matrix into console");
-            System.out.println("3: Save incidence(інцидентності) matrix into file");
-            System.out.println("4: Save incidence(суміжності) matrix into file");
+            System.out.println("1: Print adjacency(суміжності) matrix into console");
+            System.out.println("2: Check is matrix is reflexive");
+            System.out.println("3: Check is matrix is transitive");
             System.out.println("0 : Shutdown");
             System.out.print("Input: ");
-            menu=scanner.nextInt();
-            switch (menu){
+            menu = scanner.nextInt();
+            switch (menu) {
                 case 1:
-                    printMatrix(incidenceMatrixToString());
-                    break;
-                case 2:
                     printMatrix(adjacencyMatrixToString());
                     break;
+                case 2:
+                    System.out.println(isReflex()?"Yes, matrix is reflexive":"No, matrix is not reflexive");
+                    break;
                 case 3:
-                    System.out.print("Input file to save(without .txt): ");
-                    scanner.nextLine();
-                    fileToSave= scanner.nextLine()+".txt";
-                    saveMatrixToFile(incidenceMatrixToString(),fileToSave);
+                    System.out.println(isTransitive()?"Yes, matrix is transitive":"No, matrix is not transitive");
                     break;
-                case 4:
-                    System.out.print("Input file to save(without .txt): ");
-                    scanner.nextLine();
-                    fileToSave = scanner.nextLine()+".txt";
-                    saveMatrixToFile(adjacencyMatrixToString(),fileToSave);
+                default:
                     break;
-                default: break;
             }
-        }while (menu!=0);
+        } while (menu != 0);
     }
 
 
-
-
-
-
-    public static void printMatrix(String matrix){
+    public static void printMatrix(String matrix) {
         System.out.println(matrix);
     }
-    public static void saveMatrixToFile(String matrix,String filePath){
-        try(PrintWriter printWriter = new PrintWriter(filePath)){
+
+    public static void saveMatrixToFile(String matrix, String filePath) {
+        try (PrintWriter printWriter = new PrintWriter(filePath)) {
             printWriter.println(matrix);
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("Cannot find file to write");
         }
 
     }
-
 
 
 }
