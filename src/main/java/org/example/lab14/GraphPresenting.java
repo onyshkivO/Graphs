@@ -66,18 +66,7 @@ public class GraphPresenting {
         return result.toString();
     }
 
-    public static String incidenceMatrixToString() {
-        StringBuilder result = new StringBuilder();
-        result.append("| v\\e |");
-        for (int i = 1; i <= edges; i++) {
-            result.append(String.format(" e%-2d|", i));
-        }
-        for (int i = 0; i < incidence.length; i++) {
-            result.append(String.format("\n| v%-2d |", i + 1));
-            Arrays.stream(incidence[i]).forEach(value -> result.append(String.format(" %2d |", value)));
-        }
-        return result.toString();
-    }
+
 
     public static boolean isReflex() {
         for (int i = 0; i < vertices; i++) {
@@ -147,15 +136,7 @@ public class GraphPresenting {
         System.out.println(matrix);
     }
 
-    public static void saveMatrixToFile(String matrix, String filePath) {
-        try (PrintWriter printWriter = new PrintWriter(filePath)) {
-            printWriter.println(matrix);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Cannot find file to write");
-        }
 
-    }
 
 
 }
